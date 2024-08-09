@@ -4,9 +4,11 @@ const ResetChat = require("../resetChat");
 const { delay } = require("../../utils/delay");
 
 async function processMessage(message) {
-  try {
-    const body = message.body;
+  const body = message.body;
+  const chat = await message.getChat();
 
+  try {
+    chat.sendStateTyping();
     await delay(process.env.DELAY_TIMER);
     switch (true) {
       case body === "/reset": {
@@ -23,6 +25,8 @@ async function processMessage(message) {
     }
   } catch (error) {
     console.error("[!] Error: - processMessage", error);
+  } finally {
+    chat.clearState();
   }
 }
 

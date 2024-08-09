@@ -45,7 +45,7 @@ client.on("auth_failure", (message) => {
 
 client.on("message", async (message) => {
   try {
-    const processQueue = require("./controller/processQueue");
+    const processQueue = require("./controller/process/processQueue");
     const sender = message.from;
 
     if (!messageQueues[sender]) {
