@@ -101,6 +101,7 @@ client.on("disconnected", (reason) => {
   console.log("Client was logged out: ", reason);
 });
 
+// eslint-disable-next-line no-unused-vars
 process.on("unhandledRejection", async (reason, promise) => {
   if (
     reason instanceof Error &&
