@@ -3,9 +3,8 @@ let {
   messageQueues,
   isProcessingQueues,
   processingPromise,
-} = require("../main");
-const GeminiAI = require("./gemini");
-const delay = require("./delay");
+} = require("../../main");
+const processMessage = require("./processMessage");
 
 async function processQueue(sender) {
   try {
@@ -13,16 +12,8 @@ async function processQueue(sender) {
 
     processingPromise = new Promise(async (resolve, reject) => {
       while (messageQueues[sender].length > 0) {
-        const gemini = new GeminiAI();
-
         const message = messageQueues[sender].shift();
-        const chat = await message.getChat();
-
-        await delay(process.env.DELAY_TIMER);
-        
-        chat.sendStateTyping();
-        await gemini.main(message);
-        chat.clearState();
+        await processMessage(message);
       }
       resolve();
 
