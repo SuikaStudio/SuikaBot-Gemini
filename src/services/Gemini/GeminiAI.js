@@ -43,4 +43,4 @@ class GeminiAI {
   }
 }
 
-module.exports = GeminiAI;
+module.exports = GeminiAI
