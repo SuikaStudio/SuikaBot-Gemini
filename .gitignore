@@ -3,5 +3,7 @@
 /.wwebjs_cache
 /deprecated
 
-.env
+.env*
+
+google-service-account.json
 package-lock.json

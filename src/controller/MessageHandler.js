@@ -1,20 +1,27 @@
 const { delay } = require("../utils/delay");
 
 class MessageHandler {
-  constructor({ resetChat, gemini }) {
-    this.resetChat = resetChat;
-    this.gemini = gemini;
+  constructor({ chatBotService, resetChatService }) {
+    this.chatBotService = chatBotService;
+    this.resetChatService = resetChatService;
   }
 
   async main(message) {
-    const body = message.body;
     const chat = await message.getChat();
 
     try {
-      chat.sendStateTyping();
-      await delay(process.env.DELAY_TIMER);
+      if (!chat.isMuted) {
+        chat.mute();
+      }
+      
+      if (chat.isGroup && !chat.archived) {
+        chat.archive();
+      }
 
-      await this.commannd(body);
+      chat.sendStateTyping();
+
+      await delay(process.env.DELAY_TIMER);
+      await this.#processMessage(message);
     } catch (error) {
       console.error("[!] Error: - processMessage", error);
     } finally {
@@ -22,18 +29,18 @@ class MessageHandler {
     }
   }
 
-  async commannd(body) {
-    switch (true) {
-      case body === "/reset": {
-        this.resetChat.main(body);
-        break;
-      }
+  async #processMessage(message) {
+    const body = message.body;
 
-      default: {
-        this.gemini.main(body);
+    switch (body) {
+      case "/reset":
+        await this.chatBotService.main(message);
+        break;
+
+      default:
+        await this.resetChatService.main(message);
         break;
       }
-    }
   }
 }
 

@@ -1,13 +1,21 @@
 // Import dotenv to load environment variables
 require("dotenv").config();
 
-// Import Wweb.js Client
-const { Client, LocalAuth } = require("whatsapp-web.js");
+// Import Firebase instance + service account, then initialize the app
+const { initializeApp, cert } = require('firebase-admin/app');
+const serviceAccount = require('../google-service-account.json');
+
+initializeApp({
+  credential: cert(serviceAccount)
+});
 
 // Import Dependency Injection Container
 const container = require("./di/container");
 
-// Get the os platform for setting the executable path
+// Import Wweb.js Client
+const { Client, LocalAuth } = require("whatsapp-web.js");
+
+// Get the os platform for setting Wweb.js executable path
 const osPlatform = require("os").platform();
 const execPaths = {
   win32: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
@@ -24,10 +32,6 @@ const {
   onCall,
   onDisconnect,
 } = container.resolve("clientHandler");
-
-// Print the environment and platform to the console, (optional)
-console.log("Environment", process.env.NODE_ENV);
-console.log("Running on platform: ", osPlatform);
 
 // Initialize the Wweb.js client
 const client = new Client({
@@ -47,8 +51,12 @@ client.on("message_revoke_everyone", onMessageRevokeEveryone);
 client.on("call", onCall);
 client.on("disconnected", onDisconnect);
 
-process.on("unhandledRejection", async () => {});
+process.on("unhandledRejection", () => {});
 
 client.initialize();
+
+// Print the environment and platform to the console, (optional)
+console.log("Running on platform:", osPlatform);
+console.log("Environment:", process.env.NODE_ENV);
 
 module.exports = { client };

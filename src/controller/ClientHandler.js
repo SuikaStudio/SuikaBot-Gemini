@@ -23,16 +23,6 @@ class ClientHandler {
 
   onMessage = async (message) => {
     try {
-      const chat = await message.getChat();
-
-      if (!chat.isMuted) {
-        chat.mute();
-      }
-      
-      if (chat.isGroup && !chat.archived) {
-        chat.archive();
-      }
-
       await this.queueManager.enqueue(message);
     } catch (error) {
       console.error("[!] Error: - message", error);
