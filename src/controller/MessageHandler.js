@@ -34,11 +34,11 @@ class MessageHandler {
 
     switch (body) {
       case "/reset":
-        await this.chatBotService.main(message);
+        await this.resetChatService.main(message);
         break;
 
       default:
-        await this.resetChatService.main(message);
+        await this.chatBotService.main(message);
         break;
       }
   }
