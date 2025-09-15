@@ -1,7 +1,6 @@
-const { HarmBlockThreshold, HarmCategory } = require("@google-cloud/vertexai");
+const { HarmCategory, HarmBlockThreshold } = require("@google/genai");
 
 const geminiAIConfig = {
-  model: "gemini-2.0-flash",
   safetySettings: [
     {
       category: HarmCategory.HARM_CATEGORY_HARASSMENT,

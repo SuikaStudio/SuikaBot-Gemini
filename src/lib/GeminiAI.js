@@ -1,22 +1,26 @@
+const { GoogleGenAI } = require("@google/genai");
+
 const config = require("../config/gemini");
 
 class GeminiAI {
-  constructor({ vertexAI }) {
-    this.vertexAI = vertexAI;
-  }
-
-  #getVertexModel() {
-    return this.vertexAI.getGenerativeModel(config);
+  constructor() {
+    this.googleGenAI = new GoogleGenAI({
+      apiKey: process.env.GOOGLE_API_KEY,
+    });
   }
 
   async chat(prompt, history) {
     try {
-      const model = this.#getVertexModel();
+      const model = this.googleGenAI.chats;
 
-      const chatSession = model.startChat({ history });
-      const chatResponse = await chatSession.sendMessage(prompt);
-
-      return chatResponse.response.candidates[0].content.parts[0].text.trimEnd();
+      const chatSession = model.create({
+        config,
+        history,
+        model: "gemini-2.0-flash",
+      });
+      const chatResponse = await chatSession.sendMessage({ message: prompt });
+      
+      return chatResponse.candidates[0].content.parts[0].text.trimEnd();
     } catch (error) {
       throw new Error(`GeminiAI Error: ${error.message}`);
     }

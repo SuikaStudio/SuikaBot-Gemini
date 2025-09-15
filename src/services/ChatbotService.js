@@ -16,8 +16,6 @@ class ChatbotService {
       const formattedHistory = this.#formatHistory(history);
 
       const chatResponse = await this.geminiAI.chat(formattedPrompt, formattedHistory);
-      message.reply(chatResponse);
-
       await this.chatBotRepository.addChatHistory(sender, { 
         prompt: body,
         attachment: media ? {
@@ -27,6 +25,8 @@ class ChatbotService {
         response: chatResponse,
         created: new Date().toISOString()
       });
+
+      message.reply(chatResponse);
     } catch (error) {
       console.error(`[!] Error: - handleChatBot: ${error.message}`);
       message.reply('Failed to process your message, please try again.');
