@@ -59,4 +59,4 @@ class ChatbotService {
   }
 }
 
-module.exports = ChatbotService;
+export default ChatbotService;

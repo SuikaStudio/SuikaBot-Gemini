@@ -21,4 +21,4 @@ class ResetChatService {
   }
 }
 
-module.exports = ResetChatService;
+export default ResetChatService;

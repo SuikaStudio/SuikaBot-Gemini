@@ -40,4 +40,4 @@ class ChatbotRepository {
   }
 }
 
-module.exports = ChatbotRepository;
+export default ChatbotRepository;

@@ -1,5 +1,3 @@
-module.exports = {
-  async delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  },
-};
+export const delay = async (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

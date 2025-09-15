@@ -1,4 +1,4 @@
-const { delay } = require("../utils/delay");
+import { delay } from "../utils/delay.js";
 
 class MessageHandler {
   constructor({ chatBotService, resetChatService }) {
@@ -44,4 +44,4 @@ class MessageHandler {
   }
 }
 
-module.exports = MessageHandler;
+export default MessageHandler;

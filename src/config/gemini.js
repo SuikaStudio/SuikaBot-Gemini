@@ -1,4 +1,4 @@
-const { HarmCategory, HarmBlockThreshold } = require("@google/genai");
+import { HarmCategory, HarmBlockThreshold } from "@google/genai";
 
 const geminiAIConfig = {
   safetySettings: [
@@ -24,4 +24,4 @@ const geminiAIConfig = {
   },
 };
 
-module.exports = geminiAIConfig;
+export default geminiAIConfig;

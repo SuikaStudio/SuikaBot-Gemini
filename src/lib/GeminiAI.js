@@ -1,6 +1,6 @@
-const { GoogleGenAI } = require("@google/genai");
+import { GoogleGenAI } from "@google/genai";
 
-const config = require("../config/gemini");
+import config from "../config/gemini.js";
 
 class GeminiAI {
   constructor() {
@@ -27,4 +27,4 @@ class GeminiAI {
   }
 }
 
-module.exports = GeminiAI;
+export default GeminiAI;

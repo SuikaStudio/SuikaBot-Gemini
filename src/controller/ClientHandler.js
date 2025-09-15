@@ -1,4 +1,4 @@
-const qrcode = require("qrcode-terminal");
+import qrcode from "qrcode-terminal";
 
 class ClientHandler {
   constructor({ queueManager }) {
@@ -50,4 +50,4 @@ class ClientHandler {
   }
 }
 
-module.exports = ClientHandler;
+export default ClientHandler;

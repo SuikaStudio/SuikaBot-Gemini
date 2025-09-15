@@ -1,26 +1,32 @@
-// Import dotenv to load environment variables
-require("dotenv").config();
+// Load environment variables from .env file
+import 'dotenv/config'
 
-// Import Firebase instance + service account, then initialize the app
-const { initializeApp, cert } = require('firebase-admin/app');
-const serviceAccount = require('../google-service-account.json');
-
-initializeApp({
-  credential: cert(serviceAccount)
-});
+// Import necessary modules
+import os from "os";
+import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
+import whatsappWebJS from "whatsapp-web.js";
 
 // Import Dependency Injection Container
-const container = require("./di/container");
+import container from "./di/container.js";
 
-// Import Wweb.js Client
-const { Client, LocalAuth } = require("whatsapp-web.js");
+// Destructure the necessary classes from whatsapp-web.js
+const { Client, LocalAuth } = whatsappWebJS;
 
 // Get the os platform for setting Wweb.js executable path
-const osPlatform = require("os").platform();
+const osPlatform = os.platform();
 const execPaths = {
   win32: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
   linux: "/usr/bin/chromium-browser",
 };
+
+// Initialize the Wweb.js client
+const client = new Client({
+  authStrategy: new LocalAuth(),
+  ffmpegPath: ffmpegInstaller.path,
+  puppeteer: {
+    executablePath: execPaths[osPlatform] || null,
+  },
+});
 
 // Import the controller functions for the client events
 const {
@@ -32,15 +38,6 @@ const {
   onCall,
   onDisconnect,
 } = container.resolve("clientHandler");
-
-// Initialize the Wweb.js client
-const client = new Client({
-  authStrategy: new LocalAuth(),
-  ffmpegPath: require("@ffmpeg-installer/ffmpeg").path,
-  puppeteer: {
-    executablePath: execPaths[osPlatform] || null,
-  },
-});
 
 // Set the client event listeners with the controller functions
 client.on("qr", onQr);
@@ -58,5 +55,3 @@ client.initialize();
 // Print the environment and platform to the console, (optional)
 console.log("Running on platform:", osPlatform);
 console.log("Environment:", process.env.NODE_ENV);
-
-module.exports = { client };

@@ -1,16 +1,22 @@
-const { createContainer, asClass, asValue } = require("awilix");
-const { getFirestore } = require("firebase-admin/firestore");
+import { getFirestore } from "firebase-admin/firestore";
+import { initializeApp, cert } from 'firebase-admin/app';
+import { createContainer, asClass, asValue } from "awilix";
 
-const ClientHandler = require("../controller/ClientHandler");
-const QueueManager = require("../controller/QueueManager");
-const MessageHandler = require("../controller/MessageHandler");
-const ChatbotRepository = require("../repositories/ChatbotRepository");
-const ChatBotService = require("../services/ChatBotService");
-const ResetChatService = require("../services/ResetChatService");
-const GeminiAI = require("../lib/GeminiAI");
+import ClientHandler from "../controller/ClientHandler.js";
+import QueueManager from "../controller/QueueManager.js";
+import MessageHandler from "../controller/MessageHandler.js";
+import ChatbotRepository from "../repositories/ChatbotRepository.js";
+import ChatBotService from "../services/ChatBotService.js";
+import ResetChatService from "../services/ResetChatService.js";
+import GeminiAI from "../lib/GeminiAI.js";
+
+import serviceAccount from '../../google-service-account.json' with { type: "json" };
+
+initializeApp({
+  credential: cert(serviceAccount)
+});
 
 const container = createContainer();
-
 container.register({
   firestore: asValue(getFirestore()),
   clientHandler: asClass(ClientHandler).singleton(),
@@ -22,4 +28,4 @@ container.register({
   geminiAI: asClass(GeminiAI).singleton(),
 });
 
-module.exports = container;
+export default container;
