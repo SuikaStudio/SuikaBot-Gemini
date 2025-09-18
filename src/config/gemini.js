@@ -19,6 +19,10 @@ const geminiAIConfig = {
       threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
     },
   ],
+  responseModalities: [
+    'IMAGE',
+    'TEXT',
+  ],
   systemInstruction: {
     parts: [{ text: `Gunakan bahasa Indonesia sebagai bahasa default.` }],
   },

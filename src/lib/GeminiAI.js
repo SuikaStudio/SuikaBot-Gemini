@@ -16,11 +16,11 @@ class GeminiAI {
       const chatSession = model.create({
         config,
         history,
-        model: "gemini-2.0-flash",
+        model: "gemini-2.5-flash-image-preview",
       });
       const chatResponse = await chatSession.sendMessage({ message: prompt });
       
-      return chatResponse.candidates[0].content.parts[0].text.trimEnd();
+      return chatResponse.candidates[0].content.parts;
     } catch (error) {
       throw new Error(`GeminiAI Error: ${error.message}`);
     }
