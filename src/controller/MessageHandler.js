@@ -13,7 +13,7 @@ class MessageHandler {
       if (!chat.isMuted) {
         chat.mute();
       }
-      
+
       if (chat.isGroup && !chat.archived) {
         chat.archive();
       }
@@ -30,17 +30,22 @@ class MessageHandler {
   }
 
   async #processMessage(message) {
-    const body = message.body;
+    const body = message.body.trim();
 
-    switch (body) {
-      case "/reset":
-        await this.resetChatService.main(message);
-        break;
+    if (body.startsWith("/")) {
+      switch (body) {
+        case "/reset":
+          await this.resetChatService.main(message);
+          break;
 
-      default:
-        await this.chatBotService.main(message);
-        break;
+        default:
+          await message.reply("❌ Command not found");
+          break;
       }
+      return;
+    }
+
+    await this.chatBotService.main(message);
   }
 }
 
