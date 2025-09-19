@@ -9,6 +9,7 @@ import ChatbotRepository from "../repositories/ChatbotRepository.js";
 import ChatBotService from "../services/ChatBotService.js";
 import ResetChatService from "../services/ResetChatService.js";
 import GeminiAI from "../lib/GeminiAI.js";
+import ImageUtils from "../utils/imageUtils.js";
 
 import serviceAccount from '../../google-service-account.json' with { type: "json" };
 
@@ -26,6 +27,7 @@ container.register({
   chatBotService: asClass(ChatBotService).singleton(),
   resetChatService: asClass(ResetChatService).singleton(),
   geminiAI: asClass(GeminiAI).singleton(),
+  imageUtils: asClass(ImageUtils).singleton(),
 });
 
 export default container;
