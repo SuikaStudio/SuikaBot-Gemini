@@ -1,10 +1,12 @@
 import whatsappWebJS from "whatsapp-web.js";
+
 const { MessageMedia } = whatsappWebJS;
 
 class ChatBotService {
-  constructor({ chatBotRepository, geminiAI }) {
+  constructor({ chatBotRepository, geminiAI, imageUtils }) {
     this.chatBotRepository = chatBotRepository;
     this.geminiAI = geminiAI;
+    this.imageUtils = imageUtils;
   }
 
   async main(message) {
@@ -43,7 +45,7 @@ class ChatBotService {
         },
         response: {
           text,
-          data: image || null,
+          data: image ? await this.imageUtils.compressBase64(image) : null,
           mimetype: imageMime || null,
         },
         created: new Date().toISOString(),
